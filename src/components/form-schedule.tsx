@@ -1,14 +1,14 @@
 import { FormEventHandler } from 'react'
 import { Button, Text,Title ,TextInput} from '../lib/tremor-components'
 
-export default function FormSchedule({onSubmit}:{onSubmit:FormEventHandler<HTMLFormElement>}){
+export default function FormSchedule({loading,onSubmit}:{loading?:boolean,onSubmit:FormEventHandler<HTMLFormElement>}){
     return(
         <form onSubmit={onSubmit}>
             
         <label>
             <Text>name</Text>
         </label>
-        <TextInput placeholder="name" />
+        <TextInput placeholder="name" name="name"/>
 
 
         <label>
@@ -20,8 +20,7 @@ export default function FormSchedule({onSubmit}:{onSubmit:FormEventHandler<HTMLF
             <Text>Email</Text>
         </label>
         <TextInput placeholder="name" name='email'/>
-
-       <Button>Confirm</Button>
+        <Button loading={loading} className='mt-4 w-inherit'>Confirm</Button>
     </form>
     )
 }

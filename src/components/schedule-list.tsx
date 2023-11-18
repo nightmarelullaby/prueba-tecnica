@@ -1,6 +1,21 @@
 import { Schedule } from '@/types/Schedule'
 import {Button, Card,Title } from '../lib/tremor-components'
-export function ScheduleCard({name}:{name:string}){
+import Link from "next/link"
+import { useMutation,useQueryClient } from '@tanstack/react-query'
+import { deleteSchedule } from '@/services/deleteSchedule'
+export function ScheduleCard({name,id}:{id:string|number,name:string}){
+    const queryClient = useQueryClient()
+
+    const deleteScheduleMutation = useMutation({
+        mutationKey:['deleteScheduleMutation'],
+        mutationFn:deleteSchedule
+    })
+
+
+    const handleDelete = () => {
+        deleteScheduleMutation.mutate(String(id))
+        return queryClient.invalidateQueries()
+    }
     return <Card>
         <div className="flex">
 
@@ -10,17 +25,25 @@ export function ScheduleCard({name}:{name:string}){
         </Title>
         </div>
         <div className='flex gap-x-4'>
+            <Link href={"/dashboard/"+id}> 
             <Button>
                 View
             </Button>
+            </Link>
+            
 
-            <Button>
-                Edit
-            </Button>
+            <Link href={"/dashboard"+id+"/edit"}>
+            
+                <Button>
+                    Edit
+                </Button>
+            </Link>
 
-            <Button>
-                Delete
-            </Button>
+            <div onClick={handleDelete}>
+                <Button loading={deleteScheduleMutation.isPending}>
+                    Delete
+                </Button>
+            </div>
         </div>
         </div>
     </Card>
@@ -30,7 +53,7 @@ export default function ScheduleList({data,loading}:{loading:boolean,data:Omit<S
     if(loading) return <h4>Loading...</h4>
     return (<ul className='flex flex-col gap-4'>
          {data.map(schedule => <li> 
-           <ScheduleCard name={schedule.name}/>
+           <ScheduleCard id={schedule.id} name={schedule.name}/>
            </li>)}
         
     </ul>)

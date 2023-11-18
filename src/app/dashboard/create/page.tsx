@@ -2,20 +2,14 @@
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
 import FormSchedule from '@/components/form-schedule';
-import { Button, Text,Title ,TextInput} from '../../../lib/tremor-components'
-import ScheduleInfo from '@/components/schedule-info'
 import { useMutation } from '@tanstack/react-query'
-import { updateSchedule } from '@/services/updateSchedule';
-import { Schedule } from '@/types/Schedule';
+import { createSchedule } from '@/services/addSchedule';
 
 
 export default function DashboardCreateSchedule(){
-    const router = useRouter()
-    const params = useParams()
-
-    const editScheduleMutation = useMutation({
+    const {mutate,isPending} = useMutation({
         mutationKey:['editSchedule'],
-        mutationFn:updateSchedule
+        mutationFn:createSchedule
     })
 
     const handleSubmitForm = (e:React.ChangeEvent<HTMLFormElement>) => {
@@ -23,10 +17,10 @@ export default function DashboardCreateSchedule(){
         const {target} = e
         const formdata = new FormData(target)
         const object = Object.fromEntries(formdata)
-        editScheduleMutation.mutate(object)
+        mutate(object)
     }
     
     return <main>
-        <FormSchedule onSubmit={handleSubmitForm}/>
+        <FormSchedule loading={isPending} onSubmit={handleSubmitForm}/>
     </main>
 }

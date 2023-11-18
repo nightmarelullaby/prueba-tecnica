@@ -10,8 +10,7 @@ export default function Home(){
     const {data,isError,isLoading} = useQuery({
         queryKey:['getSchedule'],
         queryFn: async ()=> {
-            console.log("hola")
-            const data = await getSchedule(undefined)
+            const data = await getSchedule()
             return data
         }
     })
