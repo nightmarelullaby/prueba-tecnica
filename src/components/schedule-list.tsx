@@ -4,20 +4,17 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import { useMutation,useQueryClient } from '@tanstack/react-query'
 import { deleteSchedule } from '@/services/deleteSchedule'
+import { useDeleteSchedule } from '@/hooks/useDeleteSchedule'
+
 export function ScheduleCard({name,id}:{id:string,name:string}){
     const queryClient = useQueryClient()
     const router = useRouter()
-
-    const deleteScheduleMutation = useMutation({
-        mutationKey:['deleteScheduleMutation'],
-        mutationFn:deleteSchedule
-    })
-
+    const deleteSchedule = useDeleteSchedule()
 
     const handleDelete = () => {
-        deleteScheduleMutation.mutate(id)
+        deleteSchedule.mutate(id)
         queryClient.invalidateQueries()
-        return window.location.reload()
+        return window.location.href = "/dashboard"
     }
     return <Card className='w-[600px]'>
         <div className="flex items-center">
@@ -48,7 +45,7 @@ export function ScheduleCard({name,id}:{id:string,name:string}){
             {/* </Link> */}
 
             <div onClick={handleDelete}>
-                <Button color="red" loading={deleteScheduleMutation.isPending}>
+                <Button color="red" loading={deleteSchedule.isPending}>
                     Delete
                 </Button>
             </div>

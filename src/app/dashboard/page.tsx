@@ -5,18 +5,14 @@ import Link from 'next/link'
 import { getSchedule } from '@/services/getSchedule'
 import ScheduleList from '@/components/schedule-list'
 import { Schedule } from '@/types/Schedule'
+import { useGetSchedule } from '@/hooks/useGetSchedule'
 
 export default function Home(){
-    const {data,isError,isLoading} = useQuery({
-        queryKey:['getSchedule'],
-        queryFn: async ()=> {
-            const data = await getSchedule()
-            return data
-        }
-    })
-    if(isLoading) return <Title>Loading...</Title>
-    if(!data) return <Title>there was an error</Title>
-    if(isError) return <Title>there was an error</Title>
+    const getSchedule = useGetSchedule()
+    
+    if(getSchedule.isLoading) return <Title>Loading...</Title>
+    if(!getSchedule.data) return <Title>there was an error</Title>
+    if(getSchedule.isError) return <Title>there was an error</Title>
     return <main className="flex items-center justify-center bg-gray-100 h-full">
 
         <div>
@@ -28,8 +24,8 @@ export default function Home(){
                 <Button>New</Button>
             </Link>
         </div>
-            {data.length === 0 && <Text className='text-center'>Create a new contact...</Text>}
-            <ScheduleList data={data} loading={isLoading}/> 
+            {getSchedule.data.length === 0 && <Text className='text-center'>Create a new contact...</Text>}
+            <ScheduleList data={getSchedule.data} loading={getSchedule.isLoading}/> 
         </div>
         </div>
     </main>

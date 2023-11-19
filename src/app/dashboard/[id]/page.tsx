@@ -1,33 +1,25 @@
 "use client";
 import { useParams } from 'next/navigation'
-import { useRouter } from 'next/navigation';
-import { Button, Text,Title } from '../../../lib/tremor-components'
+import { Button,  } from '../../../lib/tremor-components'
 import ScheduleInfo from '@/components/schedule-info'
-import { useQuery,useMutation, useQueryClient } from '@tanstack/react-query'
-import { getSchedule } from '@/services/getSchedule'
-import { deleteSchedule } from '@/services/deleteSchedule';
 import Link from 'next/link';
+import { useGetSchedule } from '@/hooks/useGetSchedule';
+import { useEditSchedule } from '@/hooks/useEditSchedule';
+import { Schedule } from '@/types/Schedule';
+import { useDeleteSchedule } from '@/hooks/useDeleteSchedule';
 
 export default function DashboardId(){
     const params = useParams()
-    const {data,isError,isLoading} = useQuery({
-        queryKey:['getSchedule'],
-        queryFn:async ()=> {
-            const response = await getSchedule(String(params.id))
-            return response;
-        }
-    })
+    const deleteSchedule = useDeleteSchedule()
+    const getSchedule = useGetSchedule(String(params.id))
     
-    const deleteScheduleMutation = useMutation({
-        mutationKey:['deleteMutation'],
-        mutationFn:deleteSchedule
-    })
-    if(isLoading) return <p>Loading...</p>
-    if(!data) return null
-    if(isError) return <p>There was an error</p>
+ 
+    if(getSchedule.isLoading) return <p>Loading...</p>
+    if(!getSchedule.data) return null
+    if(getSchedule.isError) return <p>There was an error</p>
 
     return <main className='flex items-center justify-center h-full'>
-        <ScheduleInfo name={data[0].name} email={data[0].email} phone_number={data[0].phone_number}>
+        <ScheduleInfo name={getSchedule.data[0].name} email={getSchedule.data[0].email} phone_number={getSchedule.data[0].phone_number}>
             <div className="flex gap-1 mt-4">
             <Link href={`/dashboard`} prefetch={false}>
                 <Button>Back</Button>
@@ -35,7 +27,10 @@ export default function DashboardId(){
             <Link href={`/dashboard/${params.id}/edit`} prefetch={false}>
                 <Button>Edit</Button>
             </Link>
-            <div onClick={()=>deleteScheduleMutation.mutate(params.id as string)}>
+            <div onClick={()=>{
+                deleteSchedule.mutate(params.id as string)
+                return window.location.href="/dashboard"
+                }}>
                 <Button color="red">Delete</Button>
             </div>
             </div>
