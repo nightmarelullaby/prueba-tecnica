@@ -2,9 +2,9 @@ export class ScheduleEntity {
     public name:string;
     public email:string;
     public phone_number:string;
-    public id?:number;
+    public id?:string;
 
-    constructor(id:number,name:string,email:string,phone_number:string){
+    constructor(id:string,name:string,email:string,phone_number:string){
         this.name = name
         this.email = email
         this.phone_number = phone_number

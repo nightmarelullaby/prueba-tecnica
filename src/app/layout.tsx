@@ -1,9 +1,11 @@
 "use client";
 import './globals.css';
 import { QueryClientProvider ,QueryClient} from '@tanstack/react-query'
-const queryClient = new QueryClient()
-export default function RootLayout({children}:{children:React.ReactNode}){
+import {useState} from "react"
 
+
+export default function RootLayout({children}:{children:React.ReactNode}){
+    const queryClient = new QueryClient()
     return <html lang="esp">
         <body>
             <QueryClientProvider client={queryClient}>

@@ -8,6 +8,7 @@ export async function createSchedule(body:Partial<Schedule> ){
         },
         body:JSON.stringify(body)
     })
+    if(!response.ok) throw new Error("Something was wrong")
     const json = await response.json()
     return json
 }

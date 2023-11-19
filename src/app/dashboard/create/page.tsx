@@ -7,7 +7,7 @@ import { createSchedule } from '@/services/addSchedule';
 
 
 export default function DashboardCreateSchedule(){
-    const {mutate,isPending} = useMutation({
+    const {mutate,error,isError, isPending} = useMutation({
         mutationKey:['editSchedule'],
         mutationFn:createSchedule
     })
@@ -19,8 +19,8 @@ export default function DashboardCreateSchedule(){
         const object = Object.fromEntries(formdata)
         mutate(object)
     }
-    
-    return <main>
-        <FormSchedule loading={isPending} onSubmit={handleSubmitForm}/>
+    if(isPending) <p>Loading...</p>
+    return <main className="h-full flex items-center justify-center ">
+        <FormSchedule isError={isError} error={"Wrong fields"} loading={isPending} onSubmit={handleSubmitForm}/>
     </main>
 }

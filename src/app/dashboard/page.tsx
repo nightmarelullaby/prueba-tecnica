@@ -1,5 +1,5 @@
 "use client"
-import { Button, TextInput,Card, Title } from '../../lib/tremor-components'
+import { Button, TextInput,Text,Card, Title } from '../../lib/tremor-components'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import { getSchedule } from '@/services/getSchedule'
@@ -14,17 +14,23 @@ export default function Home(){
             return data
         }
     })
+    if(isLoading) return <Title>Loading...</Title>
+    if(!data) return <Title>there was an error</Title>
     if(isError) return <Title>there was an error</Title>
     return <main className="flex items-center justify-center bg-gray-100 h-full">
 
-        <div className="m-x-10 h-full">
-        <div className="mb-4 flex gap-x-4">
+        <div>
+        <div className="h-full">
+            <Title className='mb-4 font-8xl'>My contacts</Title>
+        <div className="mb-4 flex gap-3">
             <TextInput />
             <Link href="/dashboard/create" prefetch={false}>
                 <Button>New</Button>
             </Link>
         </div>
-            <ScheduleList data={data as Omit<Schedule,'email'|'phone_number'>[]} loading={isLoading}/> 
+            {data.length === 0 && <Text className='text-center'>Create a new contact...</Text>}
+            <ScheduleList data={data} loading={isLoading}/> 
+        </div>
         </div>
     </main>
 }

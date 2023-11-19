@@ -9,11 +9,10 @@ export async function updateSchedule(body:Partial<Schedule> ){
             },
             body:JSON.stringify(body)
         })
+        if(!response.ok) throw new Error("Something was wrong")
         const json = await response.json()
-        console.log(json)
         return json
     }catch(error){
-        console.log(error,"xdd")
         throw new Error("Fetch failed")
         
     }

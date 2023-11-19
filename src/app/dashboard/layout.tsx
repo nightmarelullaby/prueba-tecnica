@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export default function dashboardRootLayout({children}:{children:ReactNode}){
-    return <main className="bg-gray-50">
+    return <div className="bg-gray-50 h-full">
         {children}
-    </main>
+    </div>
 }
