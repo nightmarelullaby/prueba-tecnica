@@ -1,7 +1,8 @@
 import {Schedule} from '../types/Schedule'
-
+import { URL } from '@/config'
 export async function createSchedule(body:Partial<Schedule> ){
-    const response = await fetch("http://localhost:4000/api/v1/schedule",{
+
+    const response = await fetch(URL,{
         method:"POST",
         headers:{
             "Content-Type":"application/json"

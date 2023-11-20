@@ -1,8 +1,9 @@
 import { Schedule } from "@/types/Schedule"
+import { URL } from '@/config';
 
 export const getSchedule = async (id?:string |string[] | undefined | null):Promise<Schedule[] | []> => {
-    let url = `http://localhost:4000/api/v1/schedule`;
-    if(id) url = `http://localhost:4000/api/v1/schedule?q=${id}`;
+    let url = URL;
+    if(id) url = `${URL}?q=${id}`;
 
     try{
         const response = await fetch(url,{

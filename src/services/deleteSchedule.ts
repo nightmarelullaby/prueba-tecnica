@@ -1,9 +1,8 @@
 import {Schedule} from '../types/Schedule'
-
+import { URL } from '@/config';
 export async function deleteSchedule(id?:string):Promise<Schedule>{
-    let url = `http://localhost:4000/api/v1/schedule/${id}`;
 
-    const response = await fetch(url,{
+    const response = await fetch(URL,{
         method:"DELETE",
     })
     if(!response.ok) throw new Error("Something was wrong")
