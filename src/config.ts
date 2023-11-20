@@ -1,1 +1,1 @@
-export const URL = process.env.BACKEND_ENDPOINT as string;
+export const URL = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT as string;
