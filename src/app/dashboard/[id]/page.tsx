@@ -4,8 +4,6 @@ import { Button,  } from '../../../lib/tremor-components'
 import ScheduleInfo from '@/components/schedule-info'
 import Link from 'next/link';
 import { useGetSchedule } from '@/hooks/useGetSchedule';
-import { useEditSchedule } from '@/hooks/useEditSchedule';
-import { Schedule } from '@/types/Schedule';
 import { useDeleteSchedule } from '@/hooks/useDeleteSchedule';
 
 export default function DashboardId(){
@@ -14,7 +12,7 @@ export default function DashboardId(){
     const getSchedule = useGetSchedule(String(params.id))
     
  
-    if(getSchedule.isLoading) return <p>Loading...</p>
+    if(getSchedule.isFetching) return <p>Loading...</p>
     if(!getSchedule.data) return null
     if(getSchedule.isError) return <p>There was an error</p>
 

@@ -1,7 +1,7 @@
 "use client";
+
 import FormSchedule from '@/components/form-schedule';
 import { useCreateSchedule } from '@/hooks/useCreateSchedule';
-
 export default function DashboardCreateSchedule(){
 
     const createSchedule = useCreateSchedule()

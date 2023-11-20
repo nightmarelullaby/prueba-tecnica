@@ -1,3 +1,5 @@
+"use client";
+
 import { updateSchedule } from "@/services/updateSchedule"
 import { useMutation } from "@tanstack/react-query"
 
