@@ -1,15 +1,20 @@
 import { Schedule } from '@/types/Schedule'
-import {Button, Card,Title } from '../lib/tremor-components'
+import {Button, Card,Title,Text } from '../lib/tremor-components'
 import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import { useDeleteSchedule } from '@/hooks/useDeleteSchedule'
+import { deleteSchedule } from '@/services/deleteSchedule'
 
-export function ScheduleCard({name,id}:{id:string,name:string}){
+export function ScheduleCard({name,id}:{id?:string,name:string}){
     const router = useRouter()
     const deleteSchedule = useDeleteSchedule()
 
     const handleDelete = () => {
-        deleteSchedule.mutate(id)
+        deleteSchedule.mutate(id,{
+            onError: (error, variables, context) => {
+                return;
+              }
+        })
         return window.location.href = "/dashboard"
     }
     return <Card className='w-[600px]'>
@@ -27,10 +32,6 @@ export function ScheduleCard({name,id}:{id:string,name:string}){
             </Button>
             </Link>
             
-{/* 
-            <Link 
-                href={"/dashboard/[id]/edit"} 
-                as={"/dashboard/"+id+"/edit"} prefetch={false}> */}
                 <Button onClick={() => {
                     router.refresh()
                     router.push("/dashboard/"+id+"/edit")
@@ -38,7 +39,6 @@ export function ScheduleCard({name,id}:{id:string,name:string}){
                     }}>
                     Edit
                 </Button>
-            {/* </Link> */}
 
             <div onClick={handleDelete}>
                 <Button color="red" loading={deleteSchedule.isPending}>
@@ -57,7 +57,7 @@ export default function ScheduleList({data,loading}:{loading:boolean,data?:Sched
 
     return (<ul className='flex flex-col gap-1'>
          {data.map(schedule => <li> 
-           <ScheduleCard id={schedule.id as string} name={schedule.name}/>
+           <ScheduleCard id={schedule.id} name={schedule.name}/>
            </li>)}
         
     </ul>)
